@@ -1,22 +1,23 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SimpleLightbox from "simplelightbox";
+import SimpleLightbox from 'simplelightbox';
 import infiniteScroll from 'infinite-scroll';
 import { ImagesApiService } from './js/images';
 import { createMarkupImageCard } from './js/markupgallery';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const refsform = document.getElementById('search-form');
-const refsgallery = document.querySelector('.gallery');
-const refsloadMore = document.querySelector('.load-more');
-
+const refs = {
+  form: document.getElementById('search-form'),
+  gallery: document.querySelector('.gallery'),
+  loadMore: document.querySelector('.load-more'),
+};
 
 const imagesApiService = new ImagesApiService();
 
 getDefaultFetchData();
 
-refsform.addEventListener('submit', handleFormSubmit);
+refs.form.addEventListener('submit', handleFormSubmit);
 
-refsloadMore.addEventListener('click', handleLoadMoreBtnClick);
+refs.loadMore.addEventListener('click', handleLoadMoreBtnClick);
 
 function handleFormSubmit(event) {
   event.preventDefault();
@@ -25,7 +26,7 @@ function handleFormSubmit(event) {
   const inputValue = searchInput.value.trim();
 
   clearMarkup();
-  refsloadMore.classList.add('is-hidden');
+  refs.loadMore.classList.add('is-hidden');
 
   if (!inputValue) {
     getMessageInfo('Write something');
@@ -67,7 +68,7 @@ async function getFetchData() {
       getMessageInfo(
         "We're sorry, but you've reached the end of search results."
       );
-      refsloadMore.classList.add('is-hidden');
+      refs.loadMore.classList.add('is-hidden');
 
       appendMarkupImage(hits);
       lightbox.refresh();
@@ -86,11 +87,11 @@ async function getFetchData() {
 
 function appendMarkupImage(cards) {
   const markup = cards.map(createMarkupImageCard).join('');
-  refsgallery.insertAdjacentHTML('beforeend', markup);
+  refs.gallery.insertAdjacentHTML('beforeend', markup);
 }
 
 function clearMarkup() {
-  refsgallery.innerHTML = '';
+  refs.gallery.innerHTML = '';
 }
 
 function getMessageErr(message) {
@@ -108,7 +109,7 @@ let lightbox = new SimpleLightbox('.gallery a', {
 
 function smootherScroll() {
   const { height: cardHeight } =
-    refsgallery.firstElementChild.getBoundingClientRect();
+    refs.gallery.firstElementChild.getBoundingClientRect();
 
   window.scrollBy({
     top: cardHeight * 0.25,
@@ -123,7 +124,7 @@ async function getDefaultFetchData() {
     appendMarkupImage(hits);
     lightbox.refresh();
 
-    refsloadMore.classList.remove('is-hidden');
+    refs.loadMore.classList.remove('is-hidden');
   } catch (err) {
     getMessageErr(err.message);
   }

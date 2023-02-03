@@ -4,8 +4,6 @@ import infiniteScroll from 'infinite-scroll';
 import { ImagesApiService } from './js/images';
 import { createMarkupImageCard } from './js/markupgallery';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-npm install simplelightbox
-
 
 const refsform = document.getElementById('search-form');
 const refsgallery = document.querySelector('.gallery');
